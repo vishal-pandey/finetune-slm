@@ -12,6 +12,40 @@ It carries three skills, a working pipeline, and the traps that cost a full nigh
 
 ---
 
+## See it running
+
+This plugin is the method distilled from a model that was actually built and deployed.
+
+| | |
+|---|---|
+| **Portfolio** | [vishalpandey.ai](https://www.vishalpandey.ai) |
+| **The fine-tuned model, live** | [vishal-agent.codeshare.co.in](https://vishal-agent.codeshare.co.in) |
+| **How it's wired up** | [vishal-pandey/vishal_agent](https://github.com/vishal-pandey/vishal_agent) — Google ADK + LiteLLM pointing at the fused model |
+
+A real exchange with the deployed model, no system prompt beyond its fact block:
+
+```
+you  > who is vishal
+model> Technical Lead at Lumiq who builds data platforms for financial services, basically.
+
+you  > where does he work
+model> Lumiq, in Noida.
+
+you  > was tcs one of his old jobs
+model> No record of that. His LinkedIn (linkedin.com/in/thevishalpandey) might help.
+```
+
+Three to twenty words. The same questions to the previous prompt-only build produced
+66–204 word answers, despite an instruction that said "1–2 sentences". That gap — 25% →
+100% persona adherence — is the clearest thing fine-tuning bought.
+
+The third exchange is the one to notice. Before the facts went back into context, the
+weights-only model answered that question *"Yes — Technical Lead, February 2020 to
+Present"* — a confident fabrication, with invented dates, for an employer that never
+existed. Which is why this plugin leads with deciding what belongs in weights.
+
+---
+
 ## What's in it
 
 | Skill | Job |
@@ -106,4 +140,4 @@ Reference hardware: M4 Mac mini, 24 GB. A 4B LoRA run at ~1,300 iterations takes
 
 ---
 
-MIT · [Vishal Pandey](https://github.com/vishal-pandey)
+MIT · [Vishal Pandey](https://www.vishalpandey.ai) · [github](https://github.com/vishal-pandey)
