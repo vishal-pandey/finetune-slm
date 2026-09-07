@@ -1,0 +1,13 @@
+{
+  "name": "finetune-slm",
+  "version": "0.1.0",
+  "description": "Fine-tune a small language model about any bounded subject: decide if it's the right tool, curate facts, generate a paraphrase-augmented dataset, train LoRA on Apple Silicon with MLX, and evaluate honestly.",
+  "author": {
+    "name": "Vishal Pandey",
+    "email": "contact@vishalpandey.ai"
+  },
+  "homepage": "https://github.com/vishal-pandey/finetune-slm",
+  "repository": "https://github.com/vishal-pandey/finetune-slm",
+  "license": "MIT",
+  "keywords": ["fine-tuning", "lora", "mlx", "apple-silicon", "slm", "evaluation", "qwen"]
+}

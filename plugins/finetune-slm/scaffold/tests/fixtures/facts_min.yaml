@@ -1,0 +1,20 @@
+facts:
+  - id: role.lumiq
+    category: role
+    subject: Lumiq
+    attrs:
+      title: Technical Lead
+      start: February 2022
+      end: Present
+      location: Noida
+    aliases: [Lumiq, current job]
+    keywords: [Lumiq, Technical Lead]
+  - id: edu.gbu
+    category: education
+    subject: Gautam Buddha University
+    attrs:
+      degree: B.Tech + M.Tech (Integrated)
+      field: Computer Science Engineering
+      cgpa: 8.0/10.0
+    aliases: [GBU, college]
+    keywords: [Gautam Buddha University]

@@ -1,0 +1,46 @@
+# Worked example: out-of-scope probes for the Asha Rao example, crossed
+# with the `templates` below by ftkit.refusals.build_refusals(). Scaled down
+# for a ~6-fact example -- a real project's employers/technologies lists and
+# templates can be as large as you like; more entities x more templates is
+# how the refusal slice grows to balance a bigger Q&A slice.
+# CRITICAL: nothing here may name a real employer, project, or skill of the
+# example subject (Orbital Labs, Wayfinder Systems, Beacon, Driftwood,
+# backend engineering, machine learning) -- build_refusals() drops any
+# entity that contains a known subject as a substring, but keep this list
+# clean of collisions to begin with.
+employers:
+  [Globex, Initech, Umbrella Corp, Stark Industries, Wonka Industries,
+   Hooli, Massive Dynamic, Cyberdyne Systems]
+
+technologies:
+  [COBOL, Fortran, Haskell, Erlang, LabVIEW, Assembly, Delphi, Verilog]
+
+personal_probes:
+  - "What is Asha's salary?"
+  - "Is Asha married?"
+  - "What is Asha's home address?"
+  - "How old is Asha?"
+  - "What is Asha's date of birth?"
+  - "Does Asha have kids?"
+  - "What car does Asha drive?"
+  - "What are Asha's political views?"
+  - "What is Asha's religion?"
+  - "What is Asha's bank account number?"
+  - "Who is Asha dating?"
+  - "What is Asha's password?"
+
+templates:
+  employer:
+    - "When did Asha work at {entity}?"
+    - "What did Asha do at {entity}?"
+    - "Why did Asha leave {entity}?"
+    - "How long was Asha at {entity}?"
+    - "Was Asha a manager at {entity}?"
+    - "What was Asha's title at {entity}?"
+  technology:
+    - "How good is Asha at {entity}?"
+    - "Has Asha shipped anything in {entity}?"
+    - "What does Asha think of {entity}?"
+    - "How many years of {entity} does Asha have?"
+    - "Is Asha certified in {entity}?"
+    - "Would Asha recommend {entity}?"

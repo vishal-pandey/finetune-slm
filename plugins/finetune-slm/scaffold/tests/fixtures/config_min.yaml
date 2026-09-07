@@ -1,0 +1,10 @@
+# Minimal config paired with facts_min.yaml for factmodel/config unit tests.
+subject_name: "Test Subject"
+subject_kind: person
+categories:
+  role:
+    required: [title]
+    optional: [start, end, location]
+  education:
+    required: [degree, field]
+    optional: [cgpa, start, end, location]

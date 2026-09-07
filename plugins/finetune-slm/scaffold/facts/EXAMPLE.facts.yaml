@@ -1,0 +1,75 @@
+# Worked example: a small, fictional facts.yaml for a made-up subject
+# ("Asha Rao", matching config.example.yaml's subject_name) across three of
+# the seven categories config.example.yaml defines -- role, project, skill.
+# A real facts.yaml can use any subset of its config's categories; a
+# category with zero facts here (education/contact/timeline/personal)
+# simply contributes zero examples.
+#
+# Every `id` must be unique. `attrs` must satisfy its category's `required`
+# list in config.example.yaml or load_facts() rejects the file. `keywords`
+# must be non-empty -- they're for eval scoring (score_factual), not for
+# template rendering.
+facts:
+  - id: role.orbital
+    category: role
+    subject: Orbital Labs
+    attrs:
+      title: Staff Engineer
+      start: March 2022
+      end: Present
+      location: Remote
+      product: Beacon
+      summary: >-
+        Leads the search-ranking team, owns the query-understanding service,
+        and mentors two junior engineers.
+    aliases: [Orbital Labs, current job, current role, where she works now]
+    keywords: [Orbital Labs, Staff Engineer]
+
+  - id: role.wayfinder
+    category: role
+    subject: Wayfinder Systems
+    attrs:
+      title: Senior Engineer
+      start: June 2019
+      end: February 2022
+      location: Austin
+      summary: >-
+        Built the routing engine for Wayfinder's logistics platform and led
+        the migration from a monolith to services.
+    aliases: [Wayfinder Systems, Wayfinder, previous job]
+    keywords: [Wayfinder Systems, Senior Engineer]
+
+  - id: project.beacon
+    category: project
+    subject: Beacon
+    attrs:
+      what: An open-source vector search engine for approximate nearest-neighbour lookups.
+      org: Orbital Labs
+      url: github.com/asha-rao/beacon
+    aliases: [Beacon]
+    keywords: [Beacon]
+
+  - id: project.driftwood
+    category: project
+    subject: Driftwood
+    attrs:
+      what: A command-line tool for diffing large Parquet files column by column.
+      org: personal project
+    aliases: [Driftwood]
+    keywords: [Driftwood]
+
+  - id: skill.backend
+    category: skill
+    subject: backend engineering
+    attrs:
+      value: Python, Go, and Rust for backend services; Postgres and Redis for storage.
+    aliases: [backend, backend skills]
+    keywords: [backend engineering, Python, Go, Rust]
+
+  - id: skill.ml
+    category: skill
+    subject: machine learning
+    attrs:
+      value: PyTorch and JAX for ranking models, plus hands-on experience with vector search.
+    aliases: [ML, machine learning skills]
+    keywords: [machine learning, PyTorch, JAX]

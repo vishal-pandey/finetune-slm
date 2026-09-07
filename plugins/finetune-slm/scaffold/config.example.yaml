@@ -1,0 +1,38 @@
+# Worked example config, paired with templates.example.yaml and the
+# facts/EXAMPLE.*.yaml files. `subject_name` is what {subject_name} in
+# templates.yaml resolves to; `subject_kind` is free text describing what
+# kind of thing the subject is (person | product | codebase | ...) and is
+# not consumed by the pipeline itself -- it's documentation for whoever
+# edits facts.yaml next.
+#
+# `categories` is the whole schema: every fact's `category` must be a key
+# here, and every fact must carry all of that category's `required` attrs.
+# `optional` attrs aren't enforced at load time, but templates.yaml can
+# still reference them -- a template referencing an attr that's in neither
+# list for its category will fail to load (see ftkit.templates).
+#
+# This example defines all seven categories used by templates.example.yaml
+# (the full 145-template conversion), even though facts/EXAMPLE.facts.yaml
+# below only uses three of them -- a category with zero facts is fine, it
+# just contributes no examples.
+subject_name: "Asha Rao"
+subject_kind: person
+
+categories:
+  role:
+    required: [title, start, end]
+    optional: [location, summary, product]
+  project:
+    required: [what, org]
+    optional: [url]
+  skill:
+    required: [value]
+  education:
+    required: [degree, field, start, end]
+    optional: [specialization, cgpa, location]
+  contact:
+    required: [value]
+  timeline:
+    required: [value]
+  personal:
+    required: [value]

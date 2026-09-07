@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+adapters/
+fused/
+data/*.jsonl
+eval/results_*.json
+.DS_Store

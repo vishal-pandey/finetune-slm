@@ -1,0 +1,696 @@
+# Worked example: 145 question/answer templates across all seven categories
+# defined in config.example.yaml (18+ per category -- see ftkit/templates.py
+# for why that floor matters). Converted mechanically from a real
+# fine-tuning project's hardcoded Python template table by substituting the
+# literal subject name for {subject_name}; every other placeholder
+# ({subject}, {title}, {start}, {end}, {location}, {summary}, {product},
+# {what}, {org}, {url}, {value}, {degree}, {field}, {specialization},
+# {cgpa}) resolves from a fact's own `attrs` (plus {subject} == fact.subject)
+# at render time. This is a worked example to copy from, not the default --
+# scripts/build_dataset.py only reads it because no other --templates was
+# given.
+#
+# `requires: [attr, ...]` skips a template for a fact missing that attr;
+# `when: {attr: value}` (e.g. `when: {end: Present}`) gates a template to
+# facts where that attr equals that value -- used here to keep present-tense
+# "current role" phrasing off past roles. ftkit.templates.applicable() also
+# independently verifies every placeholder in a template is satisfiable by
+# the fact's attrs before ever using it, so a typo'd requires/when can't
+# cause a KeyError at render time -- it just makes the template silently
+# inapplicable, which test_templates.py's placeholder tests catch.
+role:
+- question: What does {subject_name} do?
+  answers:
+  - '{title} at {subject}.'
+  - He's {title} at {subject}.
+  when:
+    end: Present
+- question: What is {subject_name}'s current role?
+  answers:
+  - '{title} at {subject}, since {start}.'
+  - '{title} at {subject}.'
+  requires:
+  - start
+  when:
+    end: Present
+- question: Where does {subject_name} work?
+  answers:
+  - '{subject}, as {title}.'
+  - He's at {subject} right now.
+  when:
+    end: Present
+- question: Where does he work now?
+  answers:
+  - '{subject} — {title}.'
+  - Currently at {subject}.
+  when:
+    end: Present
+- question: What's his current job?
+  answers:
+  - '{title} at {subject}.'
+  - '{title}, at {subject}.'
+  when:
+    end: Present
+- question: Who does {subject_name} work for?
+  answers:
+  - '{subject}.'
+  - '{subject}, where he''s {title}.'
+  when:
+    end: Present
+- question: What company is {subject_name} at?
+  answers:
+  - '{subject}.'
+  - He's at {subject} as {title}.
+  when:
+    end: Present
+- question: Tell me about {subject_name}'s current role
+  answers:
+  - '{summary}'
+  - He's {title} at {subject}. {summary}
+  requires:
+  - summary
+  when:
+    end: Present
+- question: Is {subject_name} working right now?
+  answers:
+  - Yes — {title} at {subject}.
+  - Yep, {title} at {subject}.
+  when:
+    end: Present
+- question: When did {subject_name} join {subject}?
+  answers:
+  - '{start}.'
+  - He joined in {start}.
+  requires:
+  - start
+  when:
+    end: Present
+- question: How long has {subject_name} been at {subject}?
+  answers:
+  - Since {start}.
+  - He's been there since {start}.
+  requires:
+  - start
+  when:
+    end: Present
+- question: Where is {subject_name} based?
+  answers:
+  - '{location}.'
+  - '{location} — that''s where {subject} is.'
+  requires:
+  - location
+  when:
+    end: Present
+- question: what's {subject_name} doing these days
+  answers:
+  - '{title} at {subject}.'
+  - These days he's {title} at {subject}.
+  when:
+    end: Present
+- question: current job?
+  answers:
+  - '{title} at {subject}.'
+  - '{title}, {subject}.'
+  when:
+    end: Present
+- question: What product does {subject_name} lead?
+  answers:
+  - '{product}.'
+  - He leads {product}.
+  requires:
+  - product
+  when:
+    end: Present
+- question: What did {subject_name} do at {subject}?
+  answers:
+  - '{title}.'
+  - He was {title} there.
+- question: Tell me about {subject}
+  answers:
+  - '{summary}'
+  - '{title} at {subject}. {summary}'
+  requires:
+  - summary
+- question: What was {subject_name}'s role at {subject}?
+  answers:
+  - '{title}.'
+  - '{title}, from {start} to {end}.'
+  requires:
+  - start
+  - end
+- question: When was {subject_name} at {subject}?
+  answers:
+  - '{start} to {end}.'
+  - From {start} until {end}.
+  requires:
+  - start
+  - end
+- question: Did {subject_name} work at {subject}?
+  answers:
+  - Yes — {title}, {start} to {end}.
+  - He did, as {title}.
+  requires:
+  - start
+  - end
+- question: What is {subject}?
+  answers:
+  - '{summary}'
+  - Where {subject_name} was {title}. {summary}
+  requires:
+  - summary
+- question: How long did {subject_name} spend at {subject}?
+  answers:
+  - '{start} to {end}.'
+  - About that stretch from {start} to {end}.
+  requires:
+  - start
+  - end
+- question: Why did {subject_name} join {subject}?
+  answers:
+  - 'I don''t have his reasons on record, but here''s what he did there: {summary}'
+  - 'Not something I have documented. What I do know: {summary}'
+  requires:
+  - summary
+- question: '{subject_name}''s role at {subject}?'
+  answers:
+  - '{title}.'
+  - '{title} — that''s what he did at {subject}.'
+- question: Has {subject_name} ever worked at {subject}?
+  answers:
+  - Yes — {title}.
+  - Yes, as {title}.
+project:
+- question: What is {subject}?
+  answers:
+  - '{what}'
+  - '{what} Built at {org}.'
+- question: Tell me about {subject}
+  answers:
+  - '{what}'
+  - '{subject} — {what}'
+- question: What did {subject_name} build at {org}?
+  answers:
+  - '{subject}. {what}'
+  - '{subject}.'
+- question: Has {subject_name} worked on {subject}?
+  answers:
+  - Yes. {what}
+  - He has — {what}
+- question: What does {subject} do?
+  answers:
+  - '{what}'
+  - 'In short: {what}'
+- question: Who built {subject}?
+  answers:
+  - '{subject_name}, at {org}.'
+  - '{subject_name} did, at {org}.'
+- question: Where can I find {subject}?
+  answers:
+  - '{url}'
+  - 'Here: {url}'
+  requires:
+  - url
+- question: Is there a link for {subject}?
+  answers:
+  - '{url}'
+  - Sure — {url}
+  requires:
+  - url
+- question: What's the story behind {subject}?
+  answers:
+  - '{what}'
+  - '{what} That''s the gist.'
+- question: Give me an example of {subject_name}'s work
+  answers:
+  - '{subject} — {what}'
+  - '{subject}. {what}'
+- question: What projects has {subject_name} shipped?
+  answers:
+  - '{subject}, for one. {what}'
+  - '{subject} is one example. {what}'
+- question: what's {subject}
+  answers:
+  - '{what}'
+  - '{what}, built at {org}.'
+- question: '{subject}?'
+  answers:
+  - '{what}'
+  - That's {subject} — {what}
+- question: url for {subject}
+  answers:
+  - '{url}'
+  - 'Link: {url}'
+  requires:
+  - url
+- question: Where's {subject} hosted?
+  answers:
+  - '{url}'
+  - 'It lives here: {url}'
+  requires:
+  - url
+- question: Is {subject} something {subject_name} made?
+  answers:
+  - Yes, at {org}.
+  - Yep — {org}.
+- question: Can you describe {subject}?
+  answers:
+  - '{what}'
+  - 'Sure: {what}'
+- question: What was the point of {subject}?
+  answers:
+  - '{what}'
+  - '{what} That''s the idea.'
+- question: does he have a project called {subject}
+  answers:
+  - Yes — {what}
+  - Yes, that's his. {what}
+- question: show me one of his projects
+  answers:
+  - '{subject}. {what}'
+  - '{subject} — {what}'
+skill:
+- question: What does {subject_name} know about {subject}?
+  answers:
+  - '{value}'
+  - '{value}. That''s the breakdown.'
+- question: Does {subject_name} do {subject}?
+  answers:
+  - Yes — {value}
+  - He does. {value}
+- question: What's {subject_name}'s {subject} experience?
+  answers:
+  - '{value}'
+  - 'Mainly: {value}'
+- question: Tell me about his {subject} skills
+  answers:
+  - '{value}'
+  - 'In that area: {value}'
+- question: What tech does {subject_name} use for {subject}?
+  answers:
+  - '{value}'
+  - '{value}, mostly.'
+- question: Is {subject_name} good at {subject}?
+  answers:
+  - '{value}'
+  - He works with {value}
+- question: What's in {subject_name}'s {subject} stack?
+  answers:
+  - '{value}'
+  - '{value} — that''s the stack.'
+- question: Can {subject_name} do {subject}?
+  answers:
+  - Yes. {value}
+  - Yep — {value}
+- question: What are {subject_name}'s technical skills?
+  answers:
+  - '{value}'
+  - 'Among others: {value}'
+- question: What's his tech stack?
+  answers:
+  - '{value}'
+  - '{value}, for one.'
+- question: What languages does {subject_name} work in?
+  answers:
+  - '{value}'
+  - '{value} — that covers it.'
+- question: '{subject_name}''s {subject} skills?'
+  answers:
+  - '{value}'
+  - 'Short version: {value}'
+- question: skills in {subject}
+  answers:
+  - '{value}'
+  - '{value}, roughly.'
+- question: what about {subject}
+  answers:
+  - '{value}'
+  - 'On that front: {value}'
+- question: Is he experienced with {subject}?
+  answers:
+  - Yes — {value}
+  - He is. {value}
+- question: Give me his {subject} background
+  answers:
+  - '{value}'
+  - '{value}. That''s the gist.'
+- question: how skilled is {subject_name} in {subject}
+  answers:
+  - '{value}'
+  - Pretty solid — {value}
+- question: '{subject} experience?'
+  answers:
+  - '{value}'
+  - '{value}, yes.'
+- question: Does his stack include {subject}?
+  answers:
+  - Yes — {value}
+  - 'It does: {value}'
+- question: What's his background in {subject}?
+  answers:
+  - '{value}'
+  - 'Background: {value}'
+education:
+- question: Where did {subject_name} study?
+  answers:
+  - '{subject}.'
+  - '{subject}, {location}.'
+  requires:
+  - location
+- question: What's {subject_name}'s education?
+  answers:
+  - '{degree} in {field} from {subject}.'
+  - '{degree}, {field}.'
+- question: Did {subject_name} go to college?
+  answers:
+  - Yes — {subject}.
+  - He did. {subject}.
+- question: What degree does {subject_name} have?
+  answers:
+  - '{degree} in {field}.'
+  - '{degree}.'
+- question: What did {subject_name} specialize in?
+  answers:
+  - '{specialization}.'
+  - '{specialization} — that was the M.Tech focus.'
+  requires:
+  - specialization
+- question: What was {subject_name}'s CGPA?
+  answers:
+  - '{cgpa}.'
+  - '{cgpa} — solid, not a topper.'
+  requires:
+  - cgpa
+- question: When did {subject_name} graduate?
+  answers:
+  - '{end}.'
+  - He finished in {end}.
+  requires:
+  - end
+- question: Tell me about {subject_name}'s academic background
+  answers:
+  - '{degree} in {field} from {subject}, {start} to {end}.'
+  - '{degree}, {field}, {subject}.'
+- question: Which university did {subject_name} attend?
+  answers:
+  - '{subject}.'
+  - '{subject} — that''s where he studied.'
+- question: Is {subject_name} formally trained in AI?
+  answers:
+  - Yes — {specialization} was his M.Tech specialization.
+  - '{specialization}, at {subject}.'
+  requires:
+  - specialization
+- question: How long was {subject_name} in university?
+  answers:
+  - '{start} to {end}.'
+  - From {start} to {end}.
+  requires:
+  - start
+  - end
+- question: what's his degree
+  answers:
+  - '{degree}.'
+  - '{degree}, in {field}.'
+- question: where'd he go to school
+  answers:
+  - '{subject}.'
+  - He went to {subject}.
+- question: his cgpa?
+  answers:
+  - '{cgpa}.'
+  - It was {cgpa}.
+  requires:
+  - cgpa
+- question: What field did he study?
+  answers:
+  - '{field}.'
+  - '{field} — that was his major.'
+- question: When did he start college?
+  answers:
+  - '{start}.'
+  - He started in {start}.
+  requires:
+  - start
+- question: Where is {subject} located?
+  answers:
+  - '{location}.'
+  - It's in {location}.
+  requires:
+  - location
+- question: Does {subject_name} have a Master's degree?
+  answers:
+  - Yes — {degree} includes an M.Tech in {field}.
+  - Yes, {degree}.
+- question: What was his major?
+  answers:
+  - '{field}.'
+  - 'Field of study: {field}.'
+- question: give me his academic record
+  answers:
+  - '{degree} in {field}, {subject}, CGPA {cgpa}.'
+  - '{degree}, {field}, {subject} — CGPA {cgpa}.'
+  requires:
+  - cgpa
+contact:
+- question: What's {subject_name}'s {subject}?
+  answers:
+  - '{value}'
+  - It's {value}.
+- question: '{subject}?'
+  answers:
+  - '{value}'
+  - '{value} — that''s it.'
+- question: How can I reach {subject_name}?
+  answers:
+  - '{value}'
+  - Try {value}
+- question: How do I contact {subject_name}?
+  answers:
+  - '{value}'
+  - You can use {value}
+- question: Can you give me his {subject}?
+  answers:
+  - '{value}'
+  - Sure — {value}
+- question: What is his {subject} address?
+  answers:
+  - '{value}'
+  - That'd be {value}
+- question: Where can I find {subject_name} online?
+  answers:
+  - '{value}'
+  - 'Start here: {value}'
+- question: I want to get in touch with {subject_name}
+  answers:
+  - '{value}'
+  - 'Here you go: {value}'
+- question: Share {subject_name}'s {subject}
+  answers:
+  - '{value}'
+  - 'Here: {value}'
+- question: Is there a way to contact him?
+  answers:
+  - Yes — {value}
+  - '{value}'
+- question: '{subject_name}''s {subject} please'
+  answers:
+  - '{value}'
+  - 'Here''s his {subject}: {value}'
+- question: '{subject_name}''s {subject}?'
+  answers:
+  - '{value}'
+  - It's {value}, yep.
+- question: got his {subject}?
+  answers:
+  - '{value}'
+  - Yeah — {value}
+- question: what's his {subject}
+  answers:
+  - '{value}'
+  - '{value}, right here.'
+- question: drop his {subject}
+  answers:
+  - '{value}'
+  - Sure, {value}
+- question: how do people reach him
+  answers:
+  - '{value}'
+  - Usually via {value}
+- question: his {subject}, please?
+  answers:
+  - '{value}'
+  - '{value}, sure.'
+- question: can I get his {subject}
+  answers:
+  - '{value}'
+  - Yep — {value}
+- question: '{subject} pls'
+  answers:
+  - '{value}'
+  - here — {value}
+- question: '{subject_name} contact info?'
+  answers:
+  - '{value}'
+  - 'Contact: {value}'
+timeline:
+- question: What's {subject_name}'s career path?
+  answers:
+  - '{value}'
+  - 'In short: {value}'
+- question: Walk me through {subject_name}'s career
+  answers:
+  - '{value}'
+  - 'Here goes: {value}'
+- question: Tell me about his work experience
+  answers:
+  - '{value}'
+  - 'Broadly: {value}'
+- question: What's {subject_name}'s background?
+  answers:
+  - '{value}'
+  - 'Background: {value}'
+- question: How did {subject_name} get where he is?
+  answers:
+  - '{value}'
+  - 'Roughly: {value}'
+- question: What's his {subject}?
+  answers:
+  - '{value}'
+  - 'On {subject}: {value}'
+- question: Summarize {subject_name}'s experience
+  answers:
+  - '{value}'
+  - 'In brief: {value}'
+- question: How many years of experience does {subject_name} have?
+  answers:
+  - '{value}'
+  - Depends how you count — {value}
+- question: What jobs has {subject_name} had?
+  answers:
+  - '{value}'
+  - 'He''s had a few: {value}'
+- question: Give me {subject_name}'s work history
+  answers:
+  - '{value}'
+  - 'History: {value}'
+- question: What has {subject_name} done professionally?
+  answers:
+  - '{value}'
+  - 'Professionally: {value}'
+- question: '{subject_name}''s career, in short?'
+  answers:
+  - '{value}'
+  - '{value}, that''s the arc.'
+- question: timeline on {subject}?
+  answers:
+  - '{value}'
+  - 'Here''s the timeline: {value}'
+- question: what happened with {subject}
+  answers:
+  - '{value}'
+  - 'What happened: {value}'
+- question: explain {subject}
+  answers:
+  - '{value}'
+  - 'Simply put: {value}'
+- question: career so far?
+  answers:
+  - '{value}'
+  - 'So far: {value}'
+- question: how'd he end up where he is
+  answers:
+  - '{value}'
+  - 'Long story short: {value}'
+- question: his journey?
+  answers:
+  - '{value}'
+  - '{value}, in a nutshell.'
+- question: when did {subject} happen
+  answers:
+  - '{value}'
+  - 'Timing: {value}'
+- question: quick rundown of his career
+  answers:
+  - '{value}'
+  - 'Quick version: {value}'
+personal:
+- question: What are {subject_name}'s {subject}?
+  answers:
+  - '{value}'
+  - 'Mainly: {value}'
+- question: What does {subject_name} do for fun?
+  answers:
+  - '{value}'
+  - 'For fun: {value}'
+- question: Tell me about his {subject}
+  answers:
+  - '{value}'
+  - 'On that: {value}'
+- question: What is {subject_name} into?
+  answers:
+  - '{value}'
+  - 'He''s into this: {value}'
+- question: What does {subject_name} do outside work?
+  answers:
+  - '{value}'
+  - 'Outside work: {value}'
+- question: Any {subject}?
+  answers:
+  - '{value}'
+  - Yeah — {value}
+- question: What's {subject_name} like?
+  answers:
+  - '{value}'
+  - 'Well: {value}'
+- question: Tell me something about {subject_name} personally
+  answers:
+  - '{value}'
+  - 'Here''s one: {value}'
+- question: What are his interests?
+  answers:
+  - '{value}'
+  - 'Among them: {value}'
+- question: How does {subject_name} spend his time?
+  answers:
+  - '{value}'
+  - 'Often: {value}'
+- question: What's he passionate about?
+  answers:
+  - '{value}'
+  - 'He''s into: {value}'
+- question: what's {subject_name} about
+  answers:
+  - '{value}'
+  - '{value}, basically.'
+- question: fun facts about {subject_name}?
+  answers:
+  - '{value}'
+  - 'Here''s one: {value}'
+- question: '{subject_name} hobbies?'
+  answers:
+  - '{value}'
+  - 'Hobby-wise: {value}'
+- question: is he into {subject}
+  answers:
+  - Yes — {value}
+  - Yep, {value}
+- question: personality?
+  answers:
+  - '{value}'
+  - 'In a word: {value}'
+- question: what's he like outside of work
+  answers:
+  - '{value}'
+  - Outside work, {value}
+- question: give me some personal trivia
+  answers:
+  - '{value}'
+  - 'Trivia: {value}'
+- question: does he have hobbies
+  answers:
+  - Yes — {value}
+  - 'He does: {value}'
+- question: random fact about {subject_name}
+  answers:
+  - '{value}'
+  - 'Random one: {value}'

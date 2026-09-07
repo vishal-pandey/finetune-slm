@@ -1,0 +1,58 @@
+model: "mlx-community/Qwen3-4B-Instruct-2507-bf16"
+train: true
+fine_tune_type: lora
+optimizer: adamw
+
+data: "./data"
+seed: 0
+
+# ALL layers. Default is 16 -- insufficient for knowledge injection.
+num_layers: -1
+
+batch_size: 4
+# Size `iters` to your own corpus: (rows in data/train.jsonl / batch_size) *
+# epochs. Recompute this whenever facts.yaml or templates.yaml changes --
+# do not carry over a value derived from a different corpus size.
+iters: 1287
+val_batches: 25
+learning_rate: 1e-4
+steps_per_report: 25
+steps_per_eval: 200
+save_every: 250
+adapter_path: "adapters"
+max_seq_length: 1024
+grad_checkpoint: true
+test: false
+
+lora_parameters:
+  keys:
+    - "self_attn.q_proj"
+    - "self_attn.v_proj"
+    # MLP projections carry factual knowledge. Attention-only LoRA yields a
+    # model that sounds right but knows nothing about the subject.
+    - "mlp.gate_proj"
+    - "mlp.up_proj"
+    - "mlp.down_proj"
+  rank: 32
+  # CRITICAL: mlx-lm applies `scale` as a DIRECT multiplier on the LoRA
+  # update (mlx_lm/tuner/lora.py: `delta = (self.scale * lora_b.T) @
+  # lora_a.T`) -- it is NOT divided by rank the way HuggingFace PEFT's
+  # `alpha` is. Writing `scale: 64.0` with PEFT semantics in mind (intending
+  # alpha=64, rank=32 -> effective 2.0) instead applies 64.0 directly: every
+  # update ends up 32x too large. Symptom: training completes normally and
+  # produces a fluent model that has learned NOTHING -- it falls back to the
+  # base model's prior on every question, and train loss RISES as the
+  # learning rate warms up instead of falling. This cost a full training run
+  # (~42 min) to diagnose. If you want PEFT's alpha/r behaviour, compute
+  # alpha/rank yourself and put the result here -- e.g. alpha=64, rank=32 =>
+  # scale: 2.0, which is what's set below and is proven to converge cleanly
+  # (48-example overfit test: scale 64.0 -> train loss 5.710 after 150
+  # iters; scale 2.0 -> train loss 0.126 after 150 iters, same everything
+  # else).
+  scale: 2.0
+  dropout: 0.05
+
+lr_schedule:
+  name: cosine_decay
+  warmup: 100
+  arguments: [5e-5, 1287, 1e-6]

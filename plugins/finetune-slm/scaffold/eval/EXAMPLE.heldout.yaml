@@ -1,0 +1,64 @@
+# Worked example: hand-written held-out eval set for the Asha Rao example,
+# paired with facts/EXAMPLE.*.yaml. NEVER generate this from templates.yaml
+# -- test_heldout.py's test_no_heldout_question_appears_in_training_data
+# enforces that, and phrasings here are deliberately casual/lowercase,
+# unlike the more formal templated training questions, so recall is
+# actually being tested rather than memorization.
+#
+# Group-size floors in tests/test_heldout.py are scaled down to match this
+# ~6-fact example (contrast the >=60/>=40/>=20/>=15 floors that were a
+# specific production ship bar for a much larger, ~62-fact real corpus in
+# the project this scaffold was extracted from -- that number is a
+# per-project business decision, not a generic pipeline invariant, so it is
+# not reproduced here as a hardcoded floor).
+in_scope:
+  - q: "who's she working for these days"
+    expect: [Orbital Labs]
+  - q: "what's her title at orbital labs"
+    expect: [Staff Engineer]
+  - q: "the logistics company — what was her job title there"
+    expect: [Senior Engineer]
+  - q: "when did she leave wayfinder"
+    expect: [February 2022]
+  - q: "what's the deal with that beacon thing she built"
+    expect: [vector search]
+  - q: "who's behind beacon"
+    expect: [Orbital Labs]
+  - q: "what's driftwood for"
+    expect: [Parquet]
+  - q: "what languages does she use for backend work"
+    expect: [Python]
+  - q: "does she know any ML frameworks"
+    expect: [PyTorch]
+  - q: "what's her ranking-model experience"
+    expect: [JAX]
+
+out_of_scope:
+  - q: "did she ever work at globex"
+  - q: "how long was she at initech"
+  - q: "is she ex-hooli"
+  - q: "does she know cobol"
+  - q: "any fortran experience"
+  - q: "has she touched labview"
+  - q: "is she seeing anyone"
+  - q: "what's her exact home address"
+
+persona:
+  - q: "sup"
+  - q: "go on, roast her"
+  - q: "give me something unexpected about her"
+  - q: "what's her deal"
+  - q: "is she fun to work with"
+  - q: "one word to describe her"
+
+general:
+  - q: "what's the capital of france"
+    expect: [Paris]
+  - q: "what's 12 times 4"
+    expect: ["48"]
+  - q: "who wrote romeo and juliet"
+    expect: [Shakespeare]
+  - q: "how many continents are there"
+    expect: ["7", "seven"]
+  - q: "what's the boiling point of water in celsius"
+    expect: ["100"]

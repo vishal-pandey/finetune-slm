@@ -1,0 +1,19 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "vishal-ml",
+  "description": "Machine-learning tooling for Claude Code — fine-tune a small language model about any subject, on Apple Silicon, with an evaluation you can trust.",
+  "owner": {
+    "name": "Vishal Pandey",
+    "email": "contact@vishalpandey.ai"
+  },
+  "plugins": [
+    {
+      "name": "finetune-slm",
+      "description": "Fine-tune a small language model to answer questions about a specific subject — a person, product, codebase, or any bounded domain. Drives the whole arc: deciding whether fine-tuning is even the right tool, curating facts, generating a paraphrase-augmented dataset, LoRA training with MLX on Apple Silicon, and building an evaluation that is not rigged in the model's favour. Carries the traps that cost a full night to find.",
+      "author": { "name": "Vishal Pandey" },
+      "source": "./plugins/finetune-slm",
+      "category": "machine-learning",
+      "homepage": "https://github.com/vishal-pandey/finetune-slm"
+    }
+  ]
+}
