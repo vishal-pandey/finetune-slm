@@ -19,7 +19,7 @@ This plugin is the method distilled from a model that was actually built and dep
 | | |
 |---|---|
 | **Portfolio** | [vishalpandey.ai](https://www.vishalpandey.ai) |
-| **The fine-tuned model, live** | [vishal-agent.codeshare.co.in](https://vishal-agent.codeshare.co.in) |
+| **The fine-tuned model, live** | [vishal-agent.codeshare.co.in/docs](https://vishal-agent.codeshare.co.in/docs) — OpenAPI explorer; `POST /sessions` then `POST /run` |
 | **How it's wired up** | [vishal-pandey/vishal_agent](https://github.com/vishal-pandey/vishal_agent) — Google ADK + LiteLLM pointing at the fused model |
 
 A real exchange with the deployed model, no system prompt beyond its fact block:
@@ -55,7 +55,7 @@ existed. Which is why this plugin leads with deciding what belongs in weights.
 | **finetune-eval** | Building an evaluation that isn't rigged, and reading it correctly |
 
 Plus `scaffold/` — a tested pipeline (fact model, template engine, four dataset-slice
-generators, evaluation harness, ~80 tests) that you copy into a new project and point at
+generators, evaluation harness, 95 tests) that you copy into a new project and point at
 your own domain. Categories live in `config.yaml`, templates in `templates.yaml`. No
 Python editing to start.
 
