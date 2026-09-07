@@ -68,6 +68,39 @@ fail. Audit every row: does `expect` name what the question actually asks?
 Watch for questions with several valid answers — *"did they ever make a game"* when three
 games exist. Either accept any, or mark the row diagnostic.
 
+
+### `expect` keywords must not measure verbosity
+
+Requiring one literal token per concept punishes terse answers. A correct 11-word reply
+that never happens to use your exact word scores wrong, while a 62-word reply hits it by
+accident. You end up measuring length.
+
+Accept an **any-of group** per concept:
+
+```yaml
+- q: "was he ever running his own company"
+  expect: [["Founder", "founded", "co-founded"]]
+- q: "is he a docker and k8s guy"
+  expect: [["Kubernetes", "k8s"]]
+```
+
+**The rule that keeps this honest: an alternative must be a different *spelling of the
+same answer*, never a different concept, and it must be derived from the fact rather than
+from what a model answered.**
+
+Widening only where your model failed is rigging. A derivation from fact *aliases* was
+tried on the reference project and rejected — aliases are query-side synonyms, so
+`"he's into DevOps"` would have satisfied a Kubernetes question. It widened 55 of 68 rows
+instead of 16.
+
+**The check that tells you which you did:** rescore every condition. A genuine
+measurement fix raises them all. On the reference project the correction moved baseline
++1.5, weights-only +2.9, fine-tune +1.5 — the tersest model gaining most, exactly as the
+terseness hypothesis predicts — and left the gap between conditions unchanged. Had only
+your favoured model improved, you widened too far.
+
+Rescore from saved answers. It costs seconds and no model time.
+
 ---
 
 ## Scoring

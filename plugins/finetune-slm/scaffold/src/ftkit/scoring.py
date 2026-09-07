@@ -46,10 +46,30 @@ SPECIFIC = re.compile(r"\b(19|20)\d{2}\b|\b\d+\s*(years?|months?)\b", re.I)
 MAX_WORDS = 60
 
 
-def score_factual(answer: str, expect: Sequence[str]) -> bool:
-    """True iff every keyword in `expect` appears in `answer` (case-insensitive)."""
+def score_factual(answer: str, expect: Sequence) -> bool:
+    """True iff every required concept appears in `answer`.
+
+    Each entry in `expect` is one required concept, and may be:
+      - a string: that literal must appear, or
+      - a list of strings: ANY one of them satisfies the concept.
+
+    The any-of form exists because a concept has more than one correct
+    surface form. "Kubernetes" and "k8s" are the same answer; so are
+    "Founder" and "founded". Requiring one literal token punishes a
+    correct-but-tersely-worded answer, which silently measures verbosity
+    rather than knowledge -- a terse model hits fewer tokens by chance
+    than a verbose one.
+
+    Alternatives must be derived from the FACT (its attrs, subject and
+    aliases), never from what a model happened to answer. Loosening only
+    where a model failed rigs the eval in that model's favour.
+    """
     low = answer.lower()
-    return all(k.lower() in low for k in expect)
+    for concept in expect:
+        variants = [concept] if isinstance(concept, str) else list(concept)
+        if not any(str(v).lower() in low for v in variants):
+            return False
+    return True
 
 
 def is_refusal(answer: str) -> bool:
